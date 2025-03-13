@@ -2,19 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
                 checkout scm
             }
         }
-
         stage('Build') {
             steps {
                 script {
-                    docker.image('node:18-alpine').inside('-v ${pwd()}:/workspace -w /workspace') {
-                        // Your build steps here
-                        sh 'npm install'
-                        sh 'npm run build'
+                    def workspace = pwd()
+                    docker.image('node:18-alpine').inside("-w ${workspace}") {
+                        sh 'echo "Running inside Docker container"'
+                        // Add your build steps here
                     }
                 }
             }
