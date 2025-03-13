@@ -1,7 +1,8 @@
 pipeline {
     agent { 
-        docker {  // ✅ Define at the top level so it applies to all stages
+        docker {  
             image 'node:18-alpine'
+            args '--entrypoint=""' // Ensure shell works properly
             reuseNode true
         }
     }
@@ -9,7 +10,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh '''
+                bat '''
                 npm ci
                 npm run build
                 npm --version
