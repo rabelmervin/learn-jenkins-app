@@ -10,10 +10,16 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def workspace = pwd()
-                    docker.image('node:18-alpine').inside("-w ${workspace}") {
+                    // Define the workspace path using Jenkins environment variables and replace backslashes with forward slashes
+                    def workspacePath = env.WORKSPACE.replace('\\', '/')
+                    
+                    docker.image('node:18-alpine').inside("-w ${workspacePath}") {
                         sh 'echo "Running inside Docker container"'
+                        
                         // Add your build steps here
+                        sh 'npm install'
+                        sh 'npm run build'
+                        sh 'npm test'
                     }
                 }
             }
