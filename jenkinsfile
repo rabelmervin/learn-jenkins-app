@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.image('node:18-alpine').inside('-w /workspace/demo') {
+                    docker.image('node:18-alpine').inside {
                         // Your build steps here
                         sh 'npm install'
                         sh 'npm run build'
